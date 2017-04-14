@@ -8,8 +8,12 @@ namespace RADIANCE {
   public:
 
     // Reads and writes the camera image
-    bool TakePicture(int time_stamp);
+    bool TakePicture(unsigned int current_time);
 
+  private:
+    // Timestamp of last picture
+    // If 60s has passed, take new picture and update timestamp
+    unsigned int last_picture_time_=0;
   };
   
 } // namespace RADIANCE

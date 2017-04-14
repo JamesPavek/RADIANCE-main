@@ -25,10 +25,10 @@ namespace RADIANCE {
     
     // Reads a measurement from each sensor and places it into the
     // science data struct.
-    void ReadSensorData(const int frame_counter);
+    void ReadSensorData();
 
     // Writes the science data struct to storage
-    void WriteFrameToStorage(const int frame_counter);
+    void WriteFrameToStorage();
 
     // Structure type to hold all the sensor data for each frame
     struct frame_data_type {

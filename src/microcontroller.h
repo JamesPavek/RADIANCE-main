@@ -32,11 +32,6 @@ namespace RADIANCE {
     static constexpr float kMinHeaterTemp = 1;
     static constexpr float kMaxHeaterTemp = 3;
 
-    // Keeps track of frame number.
-    // Used for determining if a picture needs to be taken
-    // Resets every 60th frame
-    int frame_counter_ = 0;
-
     // Used to handle input/output of data from reading the sensors to storage
     DataHandler data_handler_;
 

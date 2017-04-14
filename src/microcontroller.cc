@@ -18,21 +18,6 @@ namespace RADIANCE {
     // std::set_terminate(SystemHaltException::RestartSystem);
   }
 
-  // Steps one frame. Resets if frame counter is zero
-  // frame_counter_ should always be between 0 and 59
-  void Microcontroller::UpdateFrameCounter() {
-
-    if (Microcontroller::frame_counter_<59) {
-      Microcontroller::frame_counter_++;
-    } else if (Microcontroller::frame_counter_==59) {
-      Microcontroller::frame_counter_ = 0;
-    } else {
-      // This should never happen
-      throw SystemHaltException();
-    }
-
-  }
-
   // Sets heater output based on the information in frame_data
   // The thermal algorithm is a dead zone between the minimum and maximum heater temperature(kMinHeaterTemp and kMaxHeaterTemp)
   void Microcontroller::SetThermalControl(DataHandler::frame_data_type frame_data) {
@@ -72,16 +57,13 @@ namespace RADIANCE {
       begin = std::chrono::high_resolution_clock::now();
 
       // Read all sensors
-      data_handler_.ReadSensorData(Microcontroller::frame_counter_);
+      data_handler_.ReadSensorData();
 
       // Update the heater output
       Microcontroller::SetThermalControl(data_handler_.GetFrameData());
 
       // Write processed data to storage
-      data_handler_.WriteFrameToStorage(Microcontroller::frame_counter_);
-
-      // Step one frame
-      UpdateFrameCounter();
+      data_handler_.WriteFrameToStorage();
 
       // Calculate time taken(for heartbeat information)
       end = std::chrono::high_resolution_clock::now();

@@ -15,11 +15,9 @@ namespace RADIANCE {
 
   // Reads a measurement from each sensor and places it into the
   // science data struct.
-  // Inputs: 
-  // frame_counter: Used to determine whether a picture is needed
   // In general, if housekeep sensors cannot be read return high heater temperature
   // If science instruments cannot be read return zero
-  void DataHandler::ReadSensorData(const int frame_counter) {
+  void DataHandler::ReadSensorData() {
 
     // Read timestamp measurement
     // This timestamp represents seconds since Unix epoch
@@ -32,6 +30,10 @@ namespace RADIANCE {
     if (!spectrometer_.ReadSpectrum(frame_data_.spectrum)) {
       throw SystemHaltException();
     }
+
+    // Take a picture, if necessary
+    // The time stamp is necessary to know how long ago a picture was taken
+      camera_.TakePicture(frame_data_.time_stamp);
 
     // Read temperature sensors
     // These sensors are used for heater control. Overheating is a concern, so 
@@ -65,18 +67,10 @@ namespace RADIANCE {
     if (!humidity_sensor_.ReadHumidity(frame_data_.humidity)) {
       frame_data_.humidity = 0;
     }
-
-    // Read atittude system
-    // If ADCS cannot be read, return zero for all measurements
-    if (!59) {                  // DEBUG
-      camera_.TakePicture(frame_data_.time_stamp);
-    }
   }
 
   // Writes the frame data to a csv file
-  // Inputs: 
-  // frame_counter: Used to determine a picture needs to be written
-  void DataHandler::WriteFrameToStorage(const int frame_counter) {
+  void DataHandler::WriteFrameToStorage() {
 
     // Make sure at least one data file can be written to
     // If not, restart the system
