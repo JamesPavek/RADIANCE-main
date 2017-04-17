@@ -21,8 +21,8 @@ namespace RADIANCE{
       last_picture_time_=current_time;
       std::cout << "Taking picture" << std::endl; // DEBUG
       
-      std::system(("raspistill -w 640 -h 480 -o - | tee /mnt/mlcdrive1/images/" + std::to_string(current_time) +  "/mnt/mlcdrive2/images/" + std::to_string(current_time)).c_str());
-      return true;
+      std::system(("raspistill -w 640 -h 480 -n -o /mnt/mlcdrive1/images/" + std::to_string(current_time) +  "| tee /mnt/mlcdrive2/images/" + std::to_string(current_time)).c_str());
     }
+      return true;
   }
 }
