@@ -17,57 +17,56 @@ namespace RADIANCE{
   // Start by finding and retrieving the spectrometer handle, then configuring the measurements
   Spectrometer::Spectrometer() {
 
-    //DEBUG
-    // // Initialize the library
-    // // 0 is connected via USB
-    // // If the spec cannot be found, restart the Pi and try again.
-    // if (AVS_Init(0)==ERR_SUCCESS) {
-      // throw std::runtime_error("Could not initialize spectrometer");
-    // }
+    // Initialize the library
+    // 0 is connected via USB
+    // If the spec cannot be found, restart the Pi and try again.
+    if (AVS_Init(0)==ERR_SUCCESS) {
+      throw std::runtime_error("Could not initialize spectrometer");
+    }
 
-    // // Parameters for calling AVS_GetList()
-    // unsigned int byte_set;
-    // AvsIdentityType a_plist[30];
-    // AVS_GetList(sizeof(a_plist), // Number of bytes of list data
-    //                 &byte_set, // Number of bytes needed to store information
-    //                 a_plist);    // Pointer to storage of identity information;
+    // Parameters for calling AVS_GetList()
+    unsigned int byte_set;
+    AvsIdentityType a_plist[30];
+    AVS_GetList(sizeof(a_plist), // Number of bytes of list data
+                    &byte_set, // Number of bytes needed to store information
+                    a_plist);    // Pointer to storage of identity information;
 
-    // // Retrieve handle
-    // handle_ = AVS_Activate(&a_plist[0]);
+    // Retrieve handle
+    handle_ = AVS_Activate(&a_plist[0]);
 
-    // // Set the ADC to high res mode
-    // AVS_UseHighResAdc(handle_,1);
+    // Set the ADC to high res mode
+    AVS_UseHighResAdc(handle_,1);
 
-    // // Configure the measurement
-    // meas_config_.m_StartPixel      = 0;
-    // meas_config_.m_StopPixel       = (kNumPixels - 1);
-    // meas_config_.m_IntegrationTime   = 100;
-    // meas_config_.m_IntegrationDelay    = 0;
-    // meas_config_.m_NrAverages      = 1;
+    // Configure the measurement
+    meas_config_.m_StartPixel      = 0;
+    meas_config_.m_StopPixel       = (kNumPixels - 1);
+    meas_config_.m_IntegrationTime   = 100;
+    meas_config_.m_IntegrationDelay    = 0;
+    meas_config_.m_NrAverages      = 1;
 
-    // // Dark correction
-    // meas_config_.m_CorDynDark.m_Enable = 0; // Enable dark correction
-    // meas_config_.m_CorDynDark.m_ForgetPercentage = 0; // Percentage of the new dark value pixels that has to be used
+    // Dark correction
+    meas_config_.m_CorDynDark.m_Enable = 0; // Enable dark correction
+    meas_config_.m_CorDynDark.m_ForgetPercentage = 0; // Percentage of the new dark value pixels that has to be used
 
 
-    // // Smoothing
-    // meas_config_.m_Smoothing.m_SmoothPix = 0; // Number of neighbor pixels used for smoothing
-    // meas_config_.m_Smoothing.m_SmoothModel = 0; // Only one model available(0)
+    // Smoothing
+    meas_config_.m_Smoothing.m_SmoothPix = 0; // Number of neighbor pixels used for smoothing
+    meas_config_.m_Smoothing.m_SmoothModel = 0; // Only one model available(0)
 
-    // // Saturation Detection
-    // meas_config_.m_SaturationDetection = 0; // Saturation detection, 0 is disabled
+    // Saturation Detection
+    meas_config_.m_SaturationDetection = 0; // Saturation detection, 0 is disabled
 
-    // // Trigger modes
-    // meas_config_.m_Trigger.m_Mode    = 0; // Mode, 0 is software
-    // meas_config_.m_Trigger.m_Source    = 0; // Source, 0 is external trigger
-    // meas_config_.m_Trigger.m_SourceType  = 0; // Source type, 0 is edge trigger
+    // Trigger modes
+    meas_config_.m_Trigger.m_Mode    = 0; // Mode, 0 is software
+    meas_config_.m_Trigger.m_Source    = 0; // Source, 0 is external trigger
+    meas_config_.m_Trigger.m_SourceType  = 0; // Source type, 0 is edge trigger
 
-    // // Control settings
-    // meas_config_.m_Control.m_StrobeControl = 0; // Number of strobe pulses during integration, 0 is no strobe pulses
-    // meas_config_.m_Control.m_LaserDelay    = 0; // Laser delay since trigger(unit is FPGA clock cycles)
-    // meas_config_.m_Control.m_LaserWidth    = 0; // Laser pulse width(unit is FPGA clock cycles), 0 is no laser pulse
-    // meas_config_.m_Control.m_LaserWaveLength = 1; // Peak wavelength of laser(nm), used for Raman spectroscopy
-    // meas_config_.m_Control.m_StoreToRam      = 0; // Number of spectra to be store to RAM
+    // Control settings
+    meas_config_.m_Control.m_StrobeControl = 0; // Number of strobe pulses during integration, 0 is no strobe pulses
+    meas_config_.m_Control.m_LaserDelay    = 0; // Laser delay since trigger(unit is FPGA clock cycles)
+    meas_config_.m_Control.m_LaserWidth    = 0; // Laser pulse width(unit is FPGA clock cycles), 0 is no laser pulse
+    meas_config_.m_Control.m_LaserWaveLength = 1; // Peak wavelength of laser(nm), used for Raman spectroscopy
+    meas_config_.m_Control.m_StoreToRam      = 0; // Number of spectra to be store to RAM
   }
 
   // Reads the spectrum with the setup handle. First calls AVS_Measure
@@ -76,59 +75,52 @@ namespace RADIANCE{
   // Returns false if read failed
   bool Spectrometer::ReadSpectrum(std::array<float,kNumPixels>& f_spectrum) {
 
-    //DEBUG
-    // // Configure the spectrometer with the measurement config
-    // // If the spectrometer is not found, restart the Pi
-    // if (AVS_PrepareMeasure(handle_,&meas_config_)!=ERR_SUCCESS) {
-    //   std::cerr << "Could not find spectrometer when attempting to read" << std::endl; //DEBUG
-    //   return false;
-    // }
-    // // Signal to start the measurement
-    // if (AVS_Measure(handle_,0,1)!=ERR_SUCCESS) {
-    //   std::cerr << "Err in Measure" << std::endl; //DEBUG
-    //   return false;
-    // }
-
-    // // Wait for the measurement to complete
-    // while (AVS_PollScan(handle_)!=1) {
-    //   std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    // }
-
-    // // Avantes library requires double array so use for measuring
-    // double d_spectrum[kNumPixels];
-
-    // // Get spectrum from device
-    // if (AVS_GetLambda(handle_,d_spectrum)!=ERR_SUCCESS) {
-    //   std::cerr << "Err in GetScopeData" << std::endl; //DEBUG
-    //   return false;
-    // }
-
-    // // Convert spectrum to floats for storage efficiency
-    // for (int i=0; i < kNumPixels; i++) {
-    //   f_spectrum[i] = (float) d_spectrum[i];
-    // }
-
-    for (int i=0; i < kNumPixels; i++) {
-      f_spectrum[i] = 0;
+    // Configure the spectrometer with the measurement config
+    // If the spectrometer is not found, restart the Pi
+    if (AVS_PrepareMeasure(handle_,&meas_config_)!=ERR_SUCCESS) {
+      std::cerr << "Could not find spectrometer when attempting to read" << std::endl; //DEBUG
+      return false;
     }
+    // Signal to start the measurement
+    if (AVS_Measure(handle_,0,1)!=ERR_SUCCESS) {
+      std::cerr << "Err in Measure" << std::endl; //DEBUG
+      return false;
+    }
+
+    // Wait for the measurement to complete
+    while (AVS_PollScan(handle_)!=1) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+
+    // Avantes library requires double array so use for measuring
+    double d_spectrum[kNumPixels];
+
+    // Get spectrum from device
+    if (AVS_GetLambda(handle_,d_spectrum)!=ERR_SUCCESS) {
+      std::cerr << "Err in GetScopeData" << std::endl; //DEBUG
+      return false;
+    }
+
+    // Convert spectrum to floats for storage efficiency
+    for (int i=0; i < kNumPixels; i++) {
+      f_spectrum[i] = (float) d_spectrum[i];
+    }
+
     return true;
   }
 
   // Returns spectrometer internal temperature
   bool Spectrometer::ReadSpectrometerTemperature(float& temp) {
 
-    // float voltage;
+    float voltage;
 
-    // // Get spectrometer thermistor voltage and return error code
-    // if (AVS_GetAnalogIn(handle_, 0, &voltage)!=ERR_SUCCESS) {
-    //   return false;
-    // }
+    // Get spectrometer thermistor voltage and return error code
+    if (AVS_GetAnalogIn(handle_, 0, &voltage)!=ERR_SUCCESS) {
+      return false;
+    }
 
-    // // Need to convert the result to an actual measurement
-    // temp =  Spectrometer::ConvertVoltageToTemperature(voltage);
-    // return true;
-
-    temp=100;
+    // Need to convert the result to an actual measurement
+    temp =  Spectrometer::ConvertVoltageToTemperature(voltage);
     return true;
      
   }
