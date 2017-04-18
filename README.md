@@ -29,10 +29,10 @@ Software repository for the RADIANCE senior project.
   pi@raspberrypi:~ $ crontab -e
   ```
   ```
-  @reboot sh /home/pi/RADIANCE-main/util/startup.sh &> /home/pi/radiance_log
-  */5 * * * * /home/pi/RADIANCE-main/util/restart.sh >/dev/null 2>&1
+  @reboot sh /home/pi/RADIANCE-main/util/startup.sh
+  */1 * * * * /home/pi/RADIANCE-main/util/restart.sh radiance
   ```
-  Note: The second line will cause the RPi to restart every 5 minutes if the RADIANCE software is not running.
+  Note: The second line will cause the RPi to restart every minute if the RADIANCE software is not running.
   
 - Mount, format, and configure the USB drives as ext4 and data=journal: 
   ```
