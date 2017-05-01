@@ -9,7 +9,7 @@
 #include "sensors/internaltemperaturesensor.h"
 #include "sensors/externaltemperaturesensor.h"
 #include "sensors/humiditysensor.h"
-#include "sensors/attitudesensor.h"
+#include "sensors/attitude.h"
 #include "sensors/camera.h"
 
 namespace RADIANCE {
@@ -53,7 +53,7 @@ namespace RADIANCE {
     frame_data_type frame_data_;
 
     // Sensor data members
-    AttitudeSensor attitude_sensor_;
+    attitude radiance_ads;
     Camera camera_;
     ExternalTemperatureSensor external_temperature_sensor_;
     HumiditySensor humidity_sensor_;
