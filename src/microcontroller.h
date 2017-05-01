@@ -36,8 +36,8 @@ namespace RADIANCE {
     DataHandler data_handler_;
 
     // Initialize the heater controls. 
-    HeaterControl spectrometer_heater_{23}; // GPIO pin number
-    HeaterControl battery_heater_{24};      // GPIO pin number
+    HeaterControl spectrometer_heater_{24}; // GPIO pin number
+    HeaterControl battery_heater_{23};      // GPIO pin number
   };
 
 
