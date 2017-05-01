@@ -58,8 +58,8 @@ namespace RADIANCE {
     ExternalTemperatureSensor external_temperature_sensor_;
     HumiditySensor humidity_sensor_;
     InternalTemperatureSensor lower_battery_temperature_sensor_{"10-000803362138"};
-    InternalTemperatureSensor storage_temperature_sensor_{"10-00080336329d"};
-    InternalTemperatureSensor upper_battery_temperature_sensor_{"10-00080336550e"}; // Sensor serial number
+    InternalTemperatureSensor storage_temperature_sensor_{"10-00080336550e"};
+    InternalTemperatureSensor upper_battery_temperature_sensor_{"10-00080336329d"}; // Sensor serial number
     RPiTemperatureSensor rpi_temperature_sensor_;
     Spectrometer spectrometer_;
 
