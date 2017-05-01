@@ -67,6 +67,11 @@ namespace RADIANCE {
     if (!humidity_sensor_.ReadHumidity(frame_data_.humidity)) {
       frame_data_.humidity = 0;
     }
+
+    for(int i = 0; i < 4; ++i){
+    	frame_data_.attitude_values[i] = radiance_ads.ads_read(i+1);
+    }
+    
   }
 
   // Writes the frame data to a csv file
