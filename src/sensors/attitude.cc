@@ -40,11 +40,11 @@ double attitude::ads_read(int pdiode){
 		// Set necessary CS pin low to make corresponding ADC listen
 		// Also set feedback resistance
 		if(pdiode == 1){
-			gpioWrite(12, 0);
+			gpioWrite(8, 0);
 			rf = this->rf1;
 		}
 		else if(pdiode == 2){
-			gpioWrite(16, 0);
+			gpioWrite(7, 0);
 			rf = this->rf2;
 		}
 		else if(pdiode == 3){
@@ -73,10 +73,10 @@ double attitude::ads_read(int pdiode){
 
 		// Set necessary CS pin high again
 		if(pdiode == 1){
-			gpioWrite(12, 1);
+			gpioWrite(8, 1);
 		}
 		else if(pdiode == 2){
-			gpioWrite(16, 1);
+			gpioWrite(7, 1);
 		}
 		else if(pdiode == 3){
 			gpioWrite(20, 1);
